@@ -264,13 +264,13 @@ const AutoScanQR = () => {
             {qrImage ? (
               <div className="text-center">
                 <img src={qrImage} alt="QR Code" className="w-40 h-40 mx-auto border p-2 bg-white" />
-                <button
+                {/* <button
                   onClick={handleDownloadQR}
                   className="mt-2 w-full bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700"
                 >
                   <Download className="h-4 w-4 inline mr-2" />
                   Download QR Code
-                </button>
+                </button> */}
               </div>
             ) : (
               <div className="text-center text-gray-400 py-6">
