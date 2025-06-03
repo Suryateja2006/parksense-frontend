@@ -91,7 +91,7 @@ const AutoScanQR = () => {
       const compressed = await compressImage(fullQuality)
 
       // Use your computer's IP for local testing
-      const response = await axios.post('http://172.168.0.152:5000/detect', {
+      const response = await axios.post('https://parksense-backend-x5a2.onrender.com/detect', {
         image: compressed
       }, {
         timeout: 10000,

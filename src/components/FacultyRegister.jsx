@@ -24,7 +24,7 @@ function Register() {
     }
 
     try {
-      const response = await fetch("https://parksense-backend-production-cc04.up.railway.app/api/register", {
+      const response = await fetch("https://parksense-backend-x5a2.onrender.com/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

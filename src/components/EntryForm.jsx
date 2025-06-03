@@ -31,7 +31,7 @@ function EntryForm() {
     };
 
     try {
-      const response = await fetch("https://parksense-backend-production-cc04.up.railway.app/api/entry/confirm_booking", {
+      const response = await fetch("https://parksense-backend-x5a2.onrender.com/api/entry/confirm_booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -74,7 +74,7 @@ const result = JSON.parse(text);
       <div className="w-full max-w-md rounded-lg border border-gray-700 bg-gray-900 p-8 shadow-md">
         <div className="text-center mb-6">
           <Car className="mx-auto h-10 w-10 text-blue-500" />
-          <h2 className="mt-4 text-2xl font-bold text-white">Faculty Parking</h2>
+          <h2 className="mt-4 text-2xl font-bold text-white">User Parking</h2>
           <p className="mt-1 text-gray-400">Confirm your phone number to get a slot</p>
         </div>
 
@@ -91,7 +91,7 @@ const result = JSON.parse(text);
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="phone" className="block text-sm font-medium text-gray-300">
-              Faculty Phone Number
+              User Phone Number
             </label>
             <input
               id="phone"
@@ -126,7 +126,7 @@ const result = JSON.parse(text);
                 </svg>
                 Processing...
               </>
-            ) : "Confirm & Get Faculty Slot"}
+            ) : "Confirm & Get Slot"}
           </button>
         </form>
       </div>

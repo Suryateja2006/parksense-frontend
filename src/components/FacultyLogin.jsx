@@ -39,7 +39,7 @@ function UserLogin() {
     console.log("Data being sent to backend: ", data);
 
     try {
-      const response = await fetch("https://parksense-backend-production-cc04.up.railway.app/api/facultylogin", {
+      const response = await fetch("https://parksense-backend-x5a2.onrender.com/api/facultylogin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

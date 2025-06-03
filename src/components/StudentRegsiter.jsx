@@ -28,7 +28,7 @@ function StudentRegister() {
     const data = { phone: phoneNumber, password, carNumber };
 
     try {
-      const response = await fetch("http://localhost:5000/api/studentregister", {
+      const response = await fetch("https://parksense-backend-x5a2.onrender.com/api/studentregister", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

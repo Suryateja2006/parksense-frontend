@@ -93,7 +93,7 @@ export default function StudentDashboard() {
         return;
       }
   
-      const response = await fetch("http://localhost:5000/api/auto-book-student", {
+      const response = await fetch("https://parksense-backend-x5a2.onrender.com/api/auto-book-student", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -140,7 +140,7 @@ export default function StudentDashboard() {
   const handleUnbookSlot = async () => {
     if (selectedSlot && userBookedSlot && userBookedSlot.id === selectedSlot.id) {
       try {
-        const response = await fetch('https://parksense-backend-production.up.railway.app/api/release-slot', {
+        const response = await fetch('https://parksense-backend-x5a2.onrender.com/api/release-slot', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
