@@ -91,7 +91,7 @@ const AutoScanQR = () => {
       const compressed = await compressImage(fullQuality)
 
       // Use your computer's IP for local testing
-      const response = await axios.post('https://df5a-2409-40f0-100a-5ec7-c103-cfc2-799-ad01.ngrok-free.app/detect', {
+      const response = await axios.post('https://4323-2409-40f0-100a-5ec7-c103-cfc2-799-ad01.ngrok-free.app/detect', {
         image: compressed
       }, {
         timeout: 10000,
