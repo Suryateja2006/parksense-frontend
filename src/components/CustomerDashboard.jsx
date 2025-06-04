@@ -258,7 +258,7 @@ const handlePaymentDone = async () => {
       // Fetch from server
       const timestamp = Date.now()
       const response = await fetch(
-        `https://f439-183-82-97-138.ngrok-free.app/get-qr?plate_number=${encodeURIComponent(carNumber)}&t=${timestamp}`,
+        `https://df5a-2409-40f0-100a-5ec7-c103-cfc2-799-ad01.ngrok-free.app/get-qr?plate_number=${encodeURIComponent(carNumber)}&t=${timestamp}`,
         {
           headers: {
             "Cache-Control": "no-cache",
@@ -303,7 +303,7 @@ const handlePaymentDone = async () => {
 
   const handleQRScan = async () => {
     try {
-      const response = await fetch("https://f439-183-82-97-138.ngrok-free.app/check-scan", {
+      const response = await fetch("https://df5a-2409-40f0-100a-5ec7-c103-cfc2-799-ad01.ngrok-free.app/check-scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ plate_number: userData.carNumber }),
@@ -324,7 +324,7 @@ const handlePaymentDone = async () => {
 
         // Optional: Fetch updated slot status
         const statusResponse = await fetch(
-          `https://f439-183-82-97-138.ngrok-free.app/slot-status?plate_number=${encodeURIComponent(userData.carNumber)}`,
+          `https://df5a-2409-40f0-100a-5ec7-c103-cfc2-799-ad01.ngrok-free.app/slot-status?plate_number=${encodeURIComponent(userData.carNumber)}`,
         )
         const statusData = await statusResponse.json()
         console.log("Updated slot status:", statusData)
