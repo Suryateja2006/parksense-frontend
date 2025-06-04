@@ -157,53 +157,47 @@ export default function Dashboard() {
     }
   }
 
-const handlePaymentDone = async () => {
-  try {
-    const response = await fetch("https://parksense-backend-x5a2.onrender.com/api/release-slot", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({
-        slotNumber: userBookedSlot.id,  // <-- pass slotNumber here
+  const handlePaymentDone = async () => {
+    try {
+      const response = await fetch("https://parksense-backend-x5a2.onrender.com/api/release-slot", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          slotNumber: userBookedSlot.id, // <-- pass slotNumber here
+          plate_number: userData.carNumber,
+          payment_amount: parkingAmount,
+          parking_duration: parkingDuration,
+        }),
+      })
+      console.log("Releasing slot:", {
+        slotNumber: userBookedSlot?.slotNumber,
         plate_number: userData.carNumber,
         payment_amount: parkingAmount,
         parking_duration: parkingDuration,
-      }),
-    });
-    console.log("Releasing slot:", {
-  slotNumber: userBookedSlot?.slotNumber,
-  plate_number: userData.carNumber,
-  payment_amount: parkingAmount,
-  parking_duration: parkingDuration,
-});
+      })
 
-    if (response.ok) {
-      setSlots((prev) =>
-        prev.map((s) =>
-          s.id === userBookedSlot.id ? { ...s, status: "available" } : s
-        )
-      );
-      setUserBookedSlot(null);
-      sessionStorage.removeItem("assignedSlot");
-      sessionStorage.removeItem("qrCode");
-      sessionStorage.removeItem("qrCarNumber");
-      sessionStorage.removeItem("entryTimestamp");
-      setQrCode(null);
-      setReleaseMessage(
-        `Payment of ₹${parkingAmount} completed. Slot released successfully!`
-      );
-      setTimeout(() => setReleaseMessage(""), 5000);
-    } else {
-      console.error("Failed to release slot");
+      if (response.ok) {
+        setSlots((prev) => prev.map((s) => (s.id === userBookedSlot.id ? { ...s, status: "available" } : s)))
+        setUserBookedSlot(null)
+        sessionStorage.removeItem("assignedSlot")
+        sessionStorage.removeItem("qrCode")
+        sessionStorage.removeItem("qrCarNumber")
+        sessionStorage.removeItem("entryTimestamp")
+        setQrCode(null)
+        setReleaseMessage(`Payment of ₹${parkingAmount} completed. Slot released successfully!`)
+        setTimeout(() => setReleaseMessage(""), 5000)
+      } else {
+        console.error("Failed to release slot")
+      }
+    } catch (error) {
+      console.error("Error releasing slot:", error)
+    } finally {
+      setIsPaymentDialogOpen(false)
     }
-  } catch (error) {
-    console.error("Error releasing slot:", error);
-  } finally {
-    setIsPaymentDialogOpen(false);
   }
-};
 
   const handleUnbookRequest = () => {
     if (userBookedSlot) {
@@ -554,6 +548,10 @@ const ActiveAllocation = ({ slotId, onCheckout, onRelease, hasQr }) => (
         </div>
       </div>
     </div>
+
+    {/* Add SlotDirections component here */}
+    <SlotDirections slotId={slotId} />
+
     <div className="space-y-2">
       <button
         onClick={onCheckout}
@@ -568,19 +566,6 @@ const ActiveAllocation = ({ slotId, onCheckout, onRelease, hasQr }) => (
         </svg>
         Check Out Parking Slot
       </button>
-      {/* <button
-        onClick={onRelease}
-        className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md flex items-center justify-center gap-2"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path
-            fillRule="evenodd"
-            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-            clipRule="evenodd"
-          />
-        </svg>
-        Release Without Payment
-      </button> */}
     </div>
   </div>
 )
@@ -695,3 +680,72 @@ const DialogRow = ({ label, value }) => (
     <span className="font-medium text-white">{value}</span>
   </div>
 )
+
+const SlotDirections = ({ slotId }) => {
+  if (!slotId) return null
+
+  const row = slotId.charAt(0)
+  const column = Number.parseInt(slotId.substring(1))
+
+  // Generate directions based on slot ID
+  const getDirections = () => {
+    const directions = []
+
+    // Base directions for all slots
+    directions.push("Enter through the main gate")
+    directions.push("Go straight for 25m")
+
+    // Row-specific directions
+    if (row === "A") {
+      directions.push("Stay in the first row")
+    } else if (row === "B") {
+      directions.push("Go right for 15m")
+      directions.push("Take the second row")
+    } else if (row === "C") {
+      directions.push("Go right for 30m")
+      directions.push("Take the third row")
+    } else if (row === "D") {
+      directions.push("Go right for 45m")
+      directions.push("Take the fourth row")
+    }
+
+    // Column-specific directions
+    directions.push(`Your slot is ${getOrdinal(column)} from the left (${row}${column})`)
+
+    return directions
+  }
+
+  // Helper function to get ordinal suffix (1st, 2nd, 3rd, etc.)
+  const getOrdinal = (n) => {
+    const suffixes = ["th", "st", "nd", "rd"]
+    const v = n % 100
+    return n + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0])
+  }
+
+  return (
+    <div className="mt-4 bg-gray-800 p-4 rounded-lg">
+      <h3 className="text-white font-medium flex items-center gap-2 mb-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5 text-blue-400"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fillRule="evenodd"
+            d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+            clipRule="evenodd"
+          />
+        </svg>
+        Directions to Slot {slotId}
+      </h3>
+      <ol className="space-y-2 pl-6 list-decimal">
+        {getDirections().map((direction, index) => (
+          <li key={index} className="text-gray-300 text-sm">
+            {direction}
+          </li>
+        ))}
+      </ol>
+    </div>
+  )
+}
