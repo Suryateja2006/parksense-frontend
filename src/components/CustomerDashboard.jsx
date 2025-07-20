@@ -252,7 +252,7 @@ export default function Dashboard() {
       // Fetch from server
       const timestamp = Date.now()
       const response = await fetch(
-        `https://4323-2409-40f0-100a-5ec7-c103-cfc2-799-ad01.ngrok-free.app/get-qr?plate_number=${encodeURIComponent(carNumber)}&t=${timestamp}`,
+        `https://b275c50d6683.ngrok-free.app/get-qr?plate_number=${encodeURIComponent(carNumber)}&t=${timestamp}`,
         {
           headers: {
             "Cache-Control": "no-cache",
@@ -297,7 +297,7 @@ export default function Dashboard() {
 
   const handleQRScan = async () => {
     try {
-      const response = await fetch("https://4323-2409-40f0-100a-5ec7-c103-cfc2-799-ad01.ngrok-free.app/check-scan", {
+      const response = await fetch("https://b275c50d6683.ngrok-free.app/check-scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ plate_number: userData.carNumber }),
@@ -318,7 +318,7 @@ export default function Dashboard() {
 
         // Optional: Fetch updated slot status
         const statusResponse = await fetch(
-          `https://4323-2409-40f0-100a-5ec7-c103-cfc2-799-ad01.ngrok-free.app/slot-status?plate_number=${encodeURIComponent(userData.carNumber)}`,
+          `https://b275c50d6683.ngrok-free.app/slot-status?plate_number=${encodeURIComponent(userData.carNumber)}`,
         )
         const statusData = await statusResponse.json()
         console.log("Updated slot status:", statusData)
